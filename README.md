@@ -28,7 +28,7 @@ If you do not wish to use Composer, you can download the sources. Then, to use t
 require_once('/path/to/swikly-php/init.php');
 ```
 
-### Ressources
+## Ressources
 
 [Wiki](https://github.com/swikly/swikly-php/wiki): To understand all the SDK features and how to use them.
 

@@ -2,14 +2,14 @@
     "name": "swikly/swikly-php",
     "type": "library",
     "description": "A PHP wrapper for Swikly's API",
-    "keywords": ["swikly", "payment", "security", "api"],
+    "keywords": ["swikly", "payment", "security deposit", "api"],
     "homepage": "https://github.com/swikly/swikly-php",
     "license": "MIT",
     "authors": [
         {
             "name": "Swikly Dev Team",
             "email": "contact@swikly.com",
-            "homepage": "https://swikly.com",
+            "homepage": "https://swikly.com"
         }
     ],
     "require": {
