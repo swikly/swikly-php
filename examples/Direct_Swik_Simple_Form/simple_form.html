@@ -1,0 +1,134 @@
+<!--
+		In this file you have an example of a simple form sending the user's informations
+		To create a Swik you will need to provide more informations:
+			- the date,
+			- the amount
+			- a short description,
+			- an Id,
+			- the language of the user
+			- a callback URL.
+		For more informations look at the SDK wiki :
+			https://github.com/swikly/swikly-php/wiki/Make-a-Direct-Swik
+-->
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<!-- Import JQuery and Bootstrap to manage the form easily -->
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+		<LINK rel=stylesheet type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<LINK rel=stylesheet type="text/css" href="simple_form.css">
+		<title>Swikly Direct Swik example</title>
+		<script>
+			$( document ).ready(function() {
+
+				// Handle a custom submit fucntion for the form
+				$('#newDirectSwikForm').submit(function(event) {
+
+					// Prevents the normal submit of the form
+					event.preventDefault();
+
+					var formData = new FormData($(this)[0]);
+					// Add the corresponding action to the formData
+					formData.append('action', 'newFlowSwik');
+
+					$.ajax({
+						type: 'POST',
+						dataType: 'JSON',
+						url: 'http://localhost/swikly-php/examples/Direct_Swik_Simple_Form/simple_form.php',
+						data: formData,
+						async: true,
+						cache: false,
+						contentType: false,
+						processData: false,
+					  success: function(data) {
+						if (data.status == 'ko') {
+							// Show an alert box with the error message
+							alert("Error: " + data.message);
+						}
+						if (data.redirect && data.redirect !== '') {
+							// Redirect the user to the redirect URL that the API sent
+							window.location.href = data.redirect;
+						}
+					  }
+
+					});
+				});
+			});
+		</script>
+	</head>
+	<body id="simple-form-example" class="page">
+		<div class="container">
+			<!-- 	Simple form to have the user's informations -->
+			<form id="newDirectSwikForm">
+
+				<div class="col-md-5 col-md-offset-3" style="margin-top:5%">
+
+					<div class="row">
+						<div class="col-md-3">
+							<p>First Name</p>
+						</div>
+						<div class="col-md-9">
+							<input  id="firstName" name="firstName" type="text" class="form-control" required>
+						</div>
+					</div>
+
+					<div class="row move-down-15">
+						<div class="col-md-3">
+							<p>Last name</p>
+						</div>
+						<div class="col-md-9">
+							<input id="lastName" name="lastName" type="text" class="form-control" required>
+						</div>
+					</div>
+
+					<div class="row move-down-15">
+						<div class="col-md-3">
+							<p>Birthdate</p>
+						</div>
+						<div class="col-md-9">
+							<div class="row">
+								<div class="col-md-4">
+									<input id="birthDay" name="birthDay" type="text" class="form-control" placeholder="Day (DD)" required>
+								</div>
+								<div class="col-md-4">
+									<input id="birthMonth" name="birthMonth" type="text" class="form-control" placeholder="Month (MM)" required>
+								</div>
+								<div class="col-md-4">
+									<input id="birthYear" name="birthYear" type="text" class="form-control" placeholder="Year (YYYY)" required>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row move-down-15">
+						<div class="col-md-3">
+							<p>E-mail</p>
+						</div>
+						<div class="col-md-9">
+							<input id="emailUser" name="emailUser" class="form-control" placeholder="contact@swikly.com" required>
+						</div>
+					</div>
+
+					<div class="row move-down-15">
+						<div class="col-md-3">
+							<p>Phone number</p>
+						</div>
+						<div class="col-md-9">
+							<input id="phoneNumber" name="phoneNumber" type="tel" class="form-control" required>
+						</div>
+					</div>
+
+					<div class="form-group row move-down-15">
+						<div class="col-md-10 col-md-offset-3">
+							<button type="submit" class="btn btn-primary">Confirm</button>
+						</div>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</body>
+</html>
+
