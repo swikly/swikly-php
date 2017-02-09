@@ -96,7 +96,7 @@ if ($result['status'] == 'ok') {
 // Create a swik object
 $swik = new Swik();
 
-// Set the Id you used to create it
+// Set the Swik Id (yours or the one from Swikly)
 $swik->setSwikId("YOUR_ID");
 
 // Deleting the swik
@@ -123,6 +123,30 @@ $result = $swkAPI->getListSwik();
 if ($result['status'] == 'ok') {
     echo "List of swik(s) = ";
     print_r($result['list']);
+} else {
+    echo "Failed getting the swik list";
+    echo "Error = " . $result['message'];
+}
+```
+
+### Get Swik
+
+```PHP
+<?php
+
+// Create a swik object
+$swik = new Swik();
+
+// Set the Swik Id (yours or the one from Swikly)
+$swik->setSwikId("YOUR_ID");
+
+// Get the list of your swiks
+$result = $swkAPI->getSwik($swik);
+
+// Print result of the operation
+if ($result['status'] == 'ok') {
+    echo "Swik detail = ";
+    print_r($result['swik']);
 } else {
     echo "Failed getting the swik list";
     echo "Error = " . $result['message'];
