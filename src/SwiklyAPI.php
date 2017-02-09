@@ -212,4 +212,28 @@ class SwiklyAPI {
 		return $json;
 	}
 
+	public function getSwik($swik) {
+		$headerData = array(
+			'Content-type: application/x-www-form-urlencoded',
+			"API_KEY: " . $this->apiKey,
+			"API_SECRET: " . $this->apiSecret
+		);
+
+		$swikId = $swik->getSwikId();
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $this->url . '/v1_0/getSwik?id=' . $swikId);
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headerData);
+		curl_setopt($ch, CURLOPT_POST, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($ch);
+		$json = json_decode($result, true);
+
+		// Check for curl error and set the result accordingly
+		$json = $this->getCurlError($ch, $json);
+
+		return $json;
+	}
+
 }
