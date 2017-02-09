@@ -1,6 +1,6 @@
 # Swikly PHP SDK
 
-You can sign up for a [Swikly](https://www.swikly.com) account at [https://swikly.com](https://www.swikly.com/user_signup_self.php)
+You can sign up to get a [Swikly](https://www.swikly.com) account [here](https://www.swikly.com/user_signup_self.php).
 
 ## Requirements
 
