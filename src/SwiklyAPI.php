@@ -37,6 +37,15 @@ class SwiklyAPI {
 		return $this;
 	}
 
+	// Handle curl error
+	private function getCurlError($ch, $response) {
+		if(curl_errno($ch)) {
+		    $response['status']  = 'ko';
+		    $response['message'] = 'Connection error: ' . curl_error($ch);
+		}
+		return $response;
+	}
+
 	public function newSwik(\Swikly\Swik $swik) {
 		// set required parameters
 		$data = array (
@@ -77,6 +86,9 @@ class SwiklyAPI {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$result = curl_exec($ch);
 		$json = json_decode($result, true);
+
+		// Check for curl error and set the result accordingly
+		$json = $this->getCurlError($ch, $json);
 
 		return $json;
 	}
@@ -124,11 +136,21 @@ class SwiklyAPI {
 		$resp = curl_exec($ch);
 		curl_close($ch);
 
-		list($headers, $jsonResponse) = explode("\r\n\r\n", $resp, 2);
-		preg_match_all('/^Location:(.*)$/mi', $headers, $matches);
-		$result['redirect'] = !empty($matches[1]) ? trim($matches[1][0]) : '';
+		// Check for curl error and set the result accordingly
+		$result = $this->getCurlError($ch, $resp);
 
-		$response = json_decode($jsonResponse, true);
+		// Handle the data when request succeed
+		if (isset($result['status']) && $result['status'] != 'ko') {
+			// Split the header and body data
+			list($headers, $jsonResponse) = explode("\r\n\r\n", $resp, 2);
+
+			// Parse the header for redirection
+			preg_match_all('/^Location:(.*)$/mi', $headers, $matches);
+			$result['redirect'] = !empty($matches[1]) ? trim($matches[1][0]) : '';
+
+			// Create a json object
+			$response = json_decode($jsonResponse, true);
+		}
 
 		return is_array($response) ? array_merge($result, $response) : $result;
 	}
@@ -163,6 +185,9 @@ class SwiklyAPI {
 		$result = curl_exec($ch);
 		$json = json_decode($result, true);
 
+		// Check for curl error and set the result accordingly
+		$json = $this->getCurlError($ch, $json);
+
 		return $json;
 	}
 
@@ -181,6 +206,10 @@ class SwiklyAPI {
 		$result = curl_exec($ch);
 		$json = json_decode($result, true);
 
+		// Check for curl error and set the result accordingly
+		$json = $this->getCurlError($ch, $json);
+
 		return $json;
 	}
+
 }
