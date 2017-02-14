@@ -134,25 +134,28 @@ class SwiklyAPI {
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 
 		$resp = curl_exec($ch);
-		curl_close($ch);
 
 		// Check for curl error and set the result accordingly
 		$result = $this->getCurlError($ch, $resp);
 
+		curl_close($ch);
+
 		// Handle the data when request succeed
-		if (isset($result['status']) && $result['status'] != 'ko') {
+		if ((isset($result['status']) && $result['status'] != 'ko') || !isset($result['status'])) {
+
 			// Split the header and body data
 			list($headers, $jsonResponse) = explode("\r\n\r\n", $resp, 2);
 
 			// Parse the header for redirection
 			preg_match_all('/^Location:(.*)$/mi', $headers, $matches);
-			$result['redirect'] = !empty($matches[1]) ? trim($matches[1][0]) : '';
 
-			// Create a json object
+			$result = !empty($matches[1]) ? array('redirect' => trim($matches[1][0])) : array('redirect' => '');
+
+			// Create a json object01
 			$response = json_decode($jsonResponse, true);
 		}
 
-		return is_array($response) ? array_merge($result, $response) : $result;
+		return isset($response) && is_array($response) ? array_merge($result, $response) : $result;
 	}
 
 	public function deleteSwik(\Swikly\Swik $swik) {
