@@ -166,6 +166,99 @@ class SwiklyAPI {
 		return $json;
 	}
 
+	public function newPayment(\Swikly\Swik $swik) {
+		// set required parameters
+		$data = array (
+			'swik_amount' => $swik->getSwikAmount(),
+			'swik_description' => $swik->getSwikDescription(),
+			'id' => $swik->getSwikId(),
+			'client_email' => $swik->getClientEmail(),
+			'swik_lang' => $swik->getClientLanguage(),
+			'callback_url' => $swik->getCallbackUrl(),
+		);
+
+		// set optionnal parameters
+		$optParams = $swik->getOptionnalParams();
+		$len = count($this->optFields);
+		for ($i = 0; $i < $len; $i++) {
+			if (isset($optParams[$this->optFields[$i]])) {
+				$data[$this->optFields[$i]] = $optParams[$this->optFields[$i]];
+			}
+		}
+
+		$headerData = array(
+			'Content-type: application/x-www-form-urlencoded',
+            "API_KEY: " . $this->apiKey,
+			"API_SECRET: " . $this->apiSecret
+		);
+
+		$data = http_build_query($data);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $this->url . '/v1_0/newPayment');
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headerData);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($ch);
+
+		error_log("New payment result = " . serialize($result));
+
+		$json = json_decode($result, true);
+
+		return $json;
+	}
+
+	public function newDirectPayment(\Swikly\Swik $swik) {
+		// set required parameters
+		$data = array (
+			'swik_amount' => $swik->getSwikAmount(),
+			'swik_description' => $swik->getSwikDescription(),
+			'id' => $swik->getSwikId(),
+			'client_email' => $swik->getClientEmail(),
+			'swik_lang' => $swik->getClientLanguage(),
+			'callback_url' => $swik->getCallbackUrl(),
+		);
+
+		// set optionnal parameters
+		$optParams = $swik->getOptionnalParams();
+		$len = count($this->optFields);
+		for ($i = 0; $i < $len; $i++) {
+			if (isset($optParams[$this->optFields[$i]])) {
+				$data[$this->optFields[$i]] = $optParams[$this->optFields[$i]];
+			}
+		}
+
+		$headerData = array(
+            "API_KEY: " . $this->apiKey,
+			"API_SECRET: " . $this->apiSecret
+		);
+
+		$data = http_build_query($data);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $this->url . '/v1_0/integratedPayment');
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headerData);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 1);
+
+		$resp = curl_exec($ch);
+		curl_close($ch);
+
+		list($headers, $jsonResponse) = explode("\r\n\r\n", $resp, 2);
+		preg_match_all('/^Location:(.*)$/mi', $headers, $matches);
+		$result['redirect'] = !empty($matches[1]) ? trim($matches[1][0]) : '';
+
+		$response = json_decode($jsonResponse, true);
+
+		return is_array($response) ? array_merge($result, $response) : $result;
+	}
+
 	public function getListSwik() {
 		$headerData = array(
 			'Content-type: application/x-www-form-urlencoded',
@@ -183,4 +276,23 @@ class SwiklyAPI {
 
 		return $json;
 	}
+
+	public function getSwik($swik) {
+		$headerData = array(
+			'Content-type: application/x-www-form-urlencoded',
+            "API_KEY: " . $this->apiKey,
+			"API_SECRET: " . $this->apiSecret
+		);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $this->url . '/v1_0/getSwik?id=' . $swik->getSwikId());
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headerData);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($ch);
+		$json = json_decode($result, true);
+
+		return $json;
+	}
+
 }
