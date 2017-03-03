@@ -1,6 +1,6 @@
 # Swikly PHP SDK
 
-You can sign up for a [Swikly](https://www.swikly.com) account at [https://swikly.com](https://www.swikly.com/user_signup_self.php)
+You can sign up to get a [Swikly](https://www.swikly.com) account [here](https://www.swikly.com/user_signup_self.php).
 
 ## Requirements
 
@@ -88,6 +88,37 @@ if ($result['status'] == 'ok') {
 }
 ```
 
+### Create a payment:
+```PHP
+<?php
+// Create a swik object
+$swik = new \Swikly\Swik();
+
+// Set all the swik informations
+$swik->setClientFirstName("Jean")
+    ->setClientLastName("Dupont")
+    ->setClientEmail("jean.dupont@gmail.com")
+    ->setClientPhoneNumber("+33 6 20 20 20 20") // Send SMS to that number
+    ->setClientLanguage("FR") // "EN", "FR", 'NL', 'DE'
+    ->setSwikAmount("50")
+    ->setSwikDescription("1h de canyoning le 12/08/2017....")
+    ->setSwikId("YOUR_ID")
+    ->setSendEmail("true")
+    ->setCallbackUrl('https://mywebsite.com/resultSwik');
+
+// Create and send your new swik to your client
+$result = $swkAPI->newPayment($swik);
+
+// Print result of the operation
+if ($result['status'] == 'ok') {
+    echo "New payment created\n";
+    echo "Your client can pay you at that address: " . $result['acceptUrl'];
+} else {
+    echo "Failed create a payment";
+    echo "Error = " . $result['message'];
+}
+```
+
 ### Cancel a swik:
 
 ```PHP
@@ -107,6 +138,30 @@ if ($result['status'] == 'ok') {
     echo "Swik deleted correctly";
 } else {
     echo "Failed delete swik";
+    echo "Error = " . $result['message'];
+}
+```
+
+### Getting a specific Swik:
+
+```PHP
+<?php
+
+// Create a swik object
+$swik = new Swik();
+
+// Set the Id you used to create it
+$swik->setSwikId("YOUR_ID");
+
+// Get the list of your swiks
+$result = $swkAPI->getSwik($swik);
+
+// Print result of the operation
+if ($result['status'] == 'ok') {
+    echo "My swik = ";
+    print_r($result['swik']);
+} else {
+    echo "Failed getting the swik list";
     echo "Error = " . $result['message'];
 }
 ```
