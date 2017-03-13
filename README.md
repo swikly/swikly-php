@@ -1,5 +1,11 @@
 # Swikly PHP SDK
 
+Swikly provides a new and easy way to request the equivalent to a down payment or security deposit (we call that "a swik") but with no funds being transferred.
+
+When you request a swik, you're effectively asking your customer to provide a credit card hold, specifying an amount and a period during which the deposit will be held.
+
+This allows you to secure your bookings or request a down payment or security deposit remotely, simply, and with complete confidence. Swikly also provides a payment option which is cheaper than most of its competitors.
+
 You can sign up to get a [Swikly](https://www.swikly.com) account [here](https://www.swikly.com/user_signup_self.php).
 
 ## Requirements
@@ -81,14 +87,14 @@ $result = $swkAPI->newSwik($swik);
 // Print result of the operation
 if ($result['status'] == 'ok') {
 	echo "New swik created\n";
-    echo "Your client can accept the swik at that address: " . $result['acceptUrl'];
+    echo "Your client can accept the swik at this address: " . $result['acceptUrl'];
 } else {
-	echo "Failed create swik";
+	echo "Failed to create the swik";
 	echo "Error = " . $result['message'];
 }
 ```
 
-### Create a payment:
+### Create a new payment:
 ```PHP
 <?php
 // Create a swik object
@@ -112,9 +118,9 @@ $result = $swkAPI->newPayment($swik);
 // Print result of the operation
 if ($result['status'] == 'ok') {
     echo "New payment created\n";
-    echo "Your client can pay you at that address: " . $result['acceptUrl'];
+    echo "Your client can pay you at this address: " . $result['acceptUrl'];
 } else {
-    echo "Failed create a payment";
+    echo "Failed to create a newPayment";
     echo "Error = " . $result['message'];
 }
 ```
@@ -137,7 +143,7 @@ $result = $swkAPI->deleteSwik($swik);
 if ($result['status'] == 'ok') {
     echo "Swik deleted correctly";
 } else {
-    echo "Failed delete swik";
+    echo "Failed to delete the swik";
     echo "Error = " . $result['message'];
 }
 ```
@@ -161,7 +167,7 @@ if ($result['status'] == 'ok') {
     echo "My swik = ";
     print_r($result['swik']);
 } else {
-    echo "Failed getting the swik list";
+    echo "Failed to get the swik";
     echo "Error = " . $result['message'];
 }
 ```
@@ -179,31 +185,7 @@ if ($result['status'] == 'ok') {
     echo "List of swik(s) = ";
     print_r($result['list']);
 } else {
-    echo "Failed getting the swik list";
-    echo "Error = " . $result['message'];
-}
-```
-
-### Get Swik
-
-```PHP
-<?php
-
-// Create a swik object
-$swik = new Swik();
-
-// Set the Swik Id (yours or the one from Swikly)
-$swik->setSwikId("YOUR_ID");
-
-// Get the list of your swiks
-$result = $swkAPI->getSwik($swik);
-
-// Print result of the operation
-if ($result['status'] == 'ok') {
-    echo "Swik detail = ";
-    print_r($result['swik']);
-} else {
-    echo "Failed getting the swik list";
+    echo "Failed to get the swik list";
     echo "Error = " . $result['message'];
 }
 ```
