@@ -331,6 +331,10 @@ class SwiklyAPI {
 
 		$swikId = $swik->getSwikId();
 
+		if (!$swikId || ($swikId && $swikId == "")) {
+			return array("status" => "ko", "message" => "Missing Swik Id");
+		}
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->url . '/v1_0/getSwik?id=' . $swikId);
 		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
