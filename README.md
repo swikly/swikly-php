@@ -1,3 +1,17 @@
+# DEPRECATED
+
+> This is no longer supported, please consider using https://api.swikly.com or https://apisandbox.swikly.com for sandbox environment.
+
+## New [SWIKLY_LINK](http://storage.swikly.com/docs/Swikly-LeLienSwikly.pdf).
+
+It is a unique web link that works with your Swikly account. It allows you to request swiks
+deposit or deposit for fixed amounts known in advance.
+
+[SWIKLY_LINK Documentation](http://storage.swikly.com/docs/LeLienSwikly-URLParameter.pdf)
+
+> You can sign up to get a [Swikly](https://www.swikly.com) account [here](https://www.swikly.com/views/signup.php).
+
+
 # Swikly PHP SDK
 
 Swikly provides a new and easy way to request the equivalent to a down payment or security deposit (we call that "a swik") but with no funds being transferred.
@@ -6,7 +20,6 @@ When you request a swik, you're effectively asking your customer to provide a cr
 
 This allows you to secure your bookings or request a down payment or security deposit remotely, simply, and with complete confidence. Swikly also provides a payment option which is cheaper than most of its competitors.
 
-You can sign up to get a [Swikly](https://www.swikly.com) account [here](https://www.swikly.com/user_signup_self.php).
 
 ## Requirements
 

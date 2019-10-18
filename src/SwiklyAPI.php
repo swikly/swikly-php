@@ -20,7 +20,7 @@ class SwiklyAPI {
 		$this->apiKey = $apiKey;
 		$this->apiSecret = $apiSecret;
 		$env = strtolower($env);
-		$this->url = "https://api.sandbox.swikly.com";
+		$this->url = "https://apisandbox.swikly.com";
 		if (strpos($env, 'prod') !== false) {
 			$this->url = "https://api.swikly.com";
 		}
